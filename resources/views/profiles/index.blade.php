@@ -6,10 +6,14 @@
         <div class="col-3 p-5">
             <img src="{{$user -> profile -> profileImage()}}" class="rounded-circle w-100">
         </div>
+        @php
+            $val = ($follow) ? 'true' : 'false';
+        @endphp
         <div class="col-9 pt-5">
             <div class="d-flex justify-content-between pb-4">
                 <h1>{{$user  -> username}}</h1>
-
+                <div id="followbutton" follow-status="{{$val}}" user-id="{{$user->id}}">
+                </div>
                 @can('update', $user->profile)
                 <a class="btn btn-danger h-25 w-25" href="/p/create">Add post</a>
                 @endcan

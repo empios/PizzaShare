@@ -11,7 +11,8 @@ class ProfilesController extends Controller
 {
     public function index(\App\User $user)
     {
-        return view('profiles.index', compact('user'));
+        $follow =(auth()->user()) ? auth()->user()->following->contains($user->id): false;
+        return view('profiles.index', compact('user', 'follow'));
     }
 
     public function edit(\App\User $user){

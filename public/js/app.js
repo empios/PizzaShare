@@ -86,6 +86,423 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./node_modules/axios-hooks/es/index.js":
+/*!**********************************************!*\
+  !*** ./node_modules/axios-hooks/es/index.js ***!
+  \**********************************************/
+/*! exports provided: default, __ssrPromises, resetConfigure, configure, loadCache, serializeCache, clearCache, makeUseAxios */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__ssrPromises", function() { return __ssrPromises; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resetConfigure", function() { return resetConfigure; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "configure", function() { return configure; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadCache", function() { return loadCache; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "serializeCache", function() { return serializeCache; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "clearCache", function() { return clearCache; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "makeUseAxios", function() { return makeUseAxios; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/axios-hooks/node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/asyncToGenerator */ "./node_modules/axios-hooks/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/axios-hooks/node_modules/@babel/runtime/helpers/esm/extends.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var lru_cache__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lru-cache */ "./node_modules/lru-cache/index.js");
+/* harmony import */ var lru_cache__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(lru_cache__WEBPACK_IMPORTED_MODULE_5__);
+
+
+
+
+
+
+var actions = {
+  REQUEST_START: 'REQUEST_START',
+  REQUEST_END: 'REQUEST_END'
+};
+var useAxios = makeUseAxios();
+var __ssrPromises = useAxios.__ssrPromises,
+    resetConfigure = useAxios.resetConfigure,
+    configure = useAxios.configure,
+    loadCache = useAxios.loadCache,
+    serializeCache = useAxios.serializeCache,
+    clearCache = useAxios.clearCache;
+/* harmony default export */ __webpack_exports__["default"] = (useAxios);
+
+
+function isReactEvent(obj) {
+  return obj && obj.nativeEvent && obj.nativeEvent instanceof Event;
+}
+
+function createCacheKey(config) {
+  var cleanedConfig = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_2__["default"])({}, config);
+
+  delete cleanedConfig.cancelToken;
+  return JSON.stringify(cleanedConfig);
+}
+
+function configToObject(config) {
+  if (typeof config === 'string') {
+    return {
+      url: config
+    };
+  }
+
+  return config;
+}
+
+function makeUseAxios(configurationOptions) {
+  var cache;
+  var axiosInstance;
+  var __ssrPromises = [];
+
+  function resetConfigure() {
+    cache = new lru_cache__WEBPACK_IMPORTED_MODULE_5___default.a();
+    axiosInstance = axios__WEBPACK_IMPORTED_MODULE_4___default.a;
+  }
+
+  function configure(options) {
+    if (options === void 0) {
+      options = {};
+    }
+
+    if (options.axios !== undefined) {
+      axiosInstance = options.axios;
+    }
+
+    if (options.cache !== undefined) {
+      cache = options.cache;
+    }
+  }
+
+  resetConfigure();
+  configure(configurationOptions);
+
+  function loadCache(data) {
+    cache.load(data);
+  }
+
+  function serializeCache() {
+    return _serializeCache.apply(this, arguments);
+  }
+
+  function _serializeCache() {
+    _serializeCache = Object(_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var ssrPromisesCopy;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              ssrPromisesCopy = [].concat(__ssrPromises);
+              __ssrPromises.length = 0;
+              _context.next = 4;
+              return Promise.all(ssrPromisesCopy);
+
+            case 4:
+              return _context.abrupt("return", cache.dump());
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+    return _serializeCache.apply(this, arguments);
+  }
+
+  function clearCache() {
+    cache.reset();
+  }
+
+  return Object.assign(useAxios, {
+    __ssrPromises: __ssrPromises,
+    resetConfigure: resetConfigure,
+    configure: configure,
+    loadCache: loadCache,
+    serializeCache: serializeCache,
+    clearCache: clearCache
+  });
+
+  function tryStoreInCache(config, response) {
+    if (!cache) {
+      return;
+    }
+
+    var cacheKey = createCacheKey(config);
+
+    var responseForCache = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_2__["default"])({}, response);
+
+    delete responseForCache.config;
+    delete responseForCache.request;
+    cache.set(cacheKey, responseForCache);
+  }
+
+  function createInitialState(config, options) {
+    var response = !options.manual && tryGetFromCache(config, options);
+    return Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_2__["default"])({
+      loading: !options.manual && !response,
+      error: null
+    }, response ? {
+      data: response.data,
+      response: response
+    } : null);
+  }
+
+  function reducer(state, action) {
+    var _extends2;
+
+    switch (action.type) {
+      case actions.REQUEST_START:
+        return Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_2__["default"])({}, state, {
+          loading: true,
+          error: null
+        });
+
+      case actions.REQUEST_END:
+        return Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_2__["default"])({}, state, {
+          loading: false
+        }, action.error ? {} : {
+          data: action.payload.data
+        }, (_extends2 = {}, _extends2[action.error ? 'error' : 'response'] = action.payload, _extends2));
+    }
+  }
+
+  function tryGetFromCache(config, options, dispatch) {
+    if (!cache || !options.useCache) {
+      return;
+    }
+
+    var cacheKey = createCacheKey(config);
+    var response = cache.get(cacheKey);
+
+    if (response && dispatch) {
+      dispatch({
+        type: actions.REQUEST_END,
+        payload: response
+      });
+    }
+
+    return response;
+  }
+
+  function executeRequest(_x, _x2) {
+    return _executeRequest.apply(this, arguments);
+  }
+
+  function _executeRequest() {
+    _executeRequest = Object(_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(config, dispatch) {
+      var response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.prev = 0;
+              dispatch({
+                type: actions.REQUEST_START
+              });
+              _context2.next = 4;
+              return axiosInstance(config);
+
+            case 4:
+              response = _context2.sent;
+              tryStoreInCache(config, response);
+              dispatch({
+                type: actions.REQUEST_END,
+                payload: response
+              });
+              return _context2.abrupt("return", response);
+
+            case 10:
+              _context2.prev = 10;
+              _context2.t0 = _context2["catch"](0);
+
+              if (!axios__WEBPACK_IMPORTED_MODULE_4___default.a.isCancel(_context2.t0)) {
+                dispatch({
+                  type: actions.REQUEST_END,
+                  payload: _context2.t0,
+                  error: true
+                });
+              }
+
+              throw _context2.t0;
+
+            case 14:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, null, [[0, 10]]);
+    }));
+    return _executeRequest.apply(this, arguments);
+  }
+
+  function request(_x3, _x4, _x5) {
+    return _request.apply(this, arguments);
+  }
+
+  function _request() {
+    _request = Object(_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(config, options, dispatch) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              return _context3.abrupt("return", tryGetFromCache(config, options, dispatch) || executeRequest(config, dispatch));
+
+            case 1:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }));
+    return _request.apply(this, arguments);
+  }
+
+  function useAxios(config, options) {
+    config = react__WEBPACK_IMPORTED_MODULE_3___default.a.useMemo(function () {
+      return configToObject(config);
+    }, // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(config)]);
+    options = react__WEBPACK_IMPORTED_MODULE_3___default.a.useMemo(function () {
+      return Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_2__["default"])({
+        manual: false,
+        useCache: true
+      }, options);
+    }, // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(options)]);
+    var cancelSourceRef = react__WEBPACK_IMPORTED_MODULE_3___default.a.useRef();
+
+    var _React$useReducer = react__WEBPACK_IMPORTED_MODULE_3___default.a.useReducer(reducer, createInitialState(config, options)),
+        state = _React$useReducer[0],
+        dispatch = _React$useReducer[1];
+
+    if (typeof window === 'undefined' && !options.manual) {
+      useAxios.__ssrPromises.push(axiosInstance(config));
+    }
+
+    var cancelOutstandingRequest = react__WEBPACK_IMPORTED_MODULE_3___default.a.useCallback(function () {
+      if (cancelSourceRef.current) {
+        cancelSourceRef.current.cancel();
+      }
+    }, []);
+    var withCancelToken = react__WEBPACK_IMPORTED_MODULE_3___default.a.useCallback(function (config) {
+      cancelOutstandingRequest();
+      cancelSourceRef.current = axios__WEBPACK_IMPORTED_MODULE_4___default.a.CancelToken.source();
+      config.cancelToken = cancelSourceRef.current.token;
+      return config;
+    }, [cancelOutstandingRequest]);
+    react__WEBPACK_IMPORTED_MODULE_3___default.a.useEffect(function () {
+      if (!options.manual) {
+        request(withCancelToken(config), options, dispatch)["catch"](function () {});
+      }
+
+      return cancelOutstandingRequest;
+    }, [config, options, withCancelToken, cancelOutstandingRequest]);
+    var refetch = react__WEBPACK_IMPORTED_MODULE_3___default.a.useCallback(function (configOverride, options) {
+      configOverride = configToObject(configOverride);
+      return request(withCancelToken(Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_2__["default"])({}, config, isReactEvent(configOverride) ? null : configOverride)), Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_2__["default"])({
+        useCache: false
+      }, options), dispatch);
+    }, [config, withCancelToken]);
+    return [state, refetch];
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/axios-hooks/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js":
+/*!**********************************************************************************************!*\
+  !*** ./node_modules/axios-hooks/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js ***!
+  \**********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _asyncToGenerator; });
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
+
+/***/ }),
+
+/***/ "./node_modules/axios-hooks/node_modules/@babel/runtime/helpers/esm/extends.js":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/axios-hooks/node_modules/@babel/runtime/helpers/esm/extends.js ***!
+  \*************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _extends; });
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+/***/ }),
+
+/***/ "./node_modules/axios-hooks/node_modules/@babel/runtime/regenerator/index.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/axios-hooks/node_modules/@babel/runtime/regenerator/index.js ***!
+  \***********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/regenerator-runtime/runtime.js");
+
+
+/***/ }),
+
 /***/ "./node_modules/axios/index.js":
 /*!*************************************!*\
   !*** ./node_modules/axios/index.js ***!
@@ -34378,6 +34795,810 @@ return jQuery;
 
 /***/ }),
 
+/***/ "./node_modules/lru-cache/index.js":
+/*!*****************************************!*\
+  !*** ./node_modules/lru-cache/index.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// A linked list to keep track of recently-used-ness
+const Yallist = __webpack_require__(/*! yallist */ "./node_modules/lru-cache/node_modules/yallist/yallist.js")
+
+const MAX = Symbol('max')
+const LENGTH = Symbol('length')
+const LENGTH_CALCULATOR = Symbol('lengthCalculator')
+const ALLOW_STALE = Symbol('allowStale')
+const MAX_AGE = Symbol('maxAge')
+const DISPOSE = Symbol('dispose')
+const NO_DISPOSE_ON_SET = Symbol('noDisposeOnSet')
+const LRU_LIST = Symbol('lruList')
+const CACHE = Symbol('cache')
+const UPDATE_AGE_ON_GET = Symbol('updateAgeOnGet')
+
+const naiveLength = () => 1
+
+// lruList is a yallist where the head is the youngest
+// item, and the tail is the oldest.  the list contains the Hit
+// objects as the entries.
+// Each Hit object has a reference to its Yallist.Node.  This
+// never changes.
+//
+// cache is a Map (or PseudoMap) that matches the keys to
+// the Yallist.Node object.
+class LRUCache {
+  constructor (options) {
+    if (typeof options === 'number')
+      options = { max: options }
+
+    if (!options)
+      options = {}
+
+    if (options.max && (typeof options.max !== 'number' || options.max < 0))
+      throw new TypeError('max must be a non-negative number')
+    // Kind of weird to have a default max of Infinity, but oh well.
+    const max = this[MAX] = options.max || Infinity
+
+    const lc = options.length || naiveLength
+    this[LENGTH_CALCULATOR] = (typeof lc !== 'function') ? naiveLength : lc
+    this[ALLOW_STALE] = options.stale || false
+    if (options.maxAge && typeof options.maxAge !== 'number')
+      throw new TypeError('maxAge must be a number')
+    this[MAX_AGE] = options.maxAge || 0
+    this[DISPOSE] = options.dispose
+    this[NO_DISPOSE_ON_SET] = options.noDisposeOnSet || false
+    this[UPDATE_AGE_ON_GET] = options.updateAgeOnGet || false
+    this.reset()
+  }
+
+  // resize the cache when the max changes.
+  set max (mL) {
+    if (typeof mL !== 'number' || mL < 0)
+      throw new TypeError('max must be a non-negative number')
+
+    this[MAX] = mL || Infinity
+    trim(this)
+  }
+  get max () {
+    return this[MAX]
+  }
+
+  set allowStale (allowStale) {
+    this[ALLOW_STALE] = !!allowStale
+  }
+  get allowStale () {
+    return this[ALLOW_STALE]
+  }
+
+  set maxAge (mA) {
+    if (typeof mA !== 'number')
+      throw new TypeError('maxAge must be a non-negative number')
+
+    this[MAX_AGE] = mA
+    trim(this)
+  }
+  get maxAge () {
+    return this[MAX_AGE]
+  }
+
+  // resize the cache when the lengthCalculator changes.
+  set lengthCalculator (lC) {
+    if (typeof lC !== 'function')
+      lC = naiveLength
+
+    if (lC !== this[LENGTH_CALCULATOR]) {
+      this[LENGTH_CALCULATOR] = lC
+      this[LENGTH] = 0
+      this[LRU_LIST].forEach(hit => {
+        hit.length = this[LENGTH_CALCULATOR](hit.value, hit.key)
+        this[LENGTH] += hit.length
+      })
+    }
+    trim(this)
+  }
+  get lengthCalculator () { return this[LENGTH_CALCULATOR] }
+
+  get length () { return this[LENGTH] }
+  get itemCount () { return this[LRU_LIST].length }
+
+  rforEach (fn, thisp) {
+    thisp = thisp || this
+    for (let walker = this[LRU_LIST].tail; walker !== null;) {
+      const prev = walker.prev
+      forEachStep(this, fn, walker, thisp)
+      walker = prev
+    }
+  }
+
+  forEach (fn, thisp) {
+    thisp = thisp || this
+    for (let walker = this[LRU_LIST].head; walker !== null;) {
+      const next = walker.next
+      forEachStep(this, fn, walker, thisp)
+      walker = next
+    }
+  }
+
+  keys () {
+    return this[LRU_LIST].toArray().map(k => k.key)
+  }
+
+  values () {
+    return this[LRU_LIST].toArray().map(k => k.value)
+  }
+
+  reset () {
+    if (this[DISPOSE] &&
+        this[LRU_LIST] &&
+        this[LRU_LIST].length) {
+      this[LRU_LIST].forEach(hit => this[DISPOSE](hit.key, hit.value))
+    }
+
+    this[CACHE] = new Map() // hash of items by key
+    this[LRU_LIST] = new Yallist() // list of items in order of use recency
+    this[LENGTH] = 0 // length of items in the list
+  }
+
+  dump () {
+    return this[LRU_LIST].map(hit =>
+      isStale(this, hit) ? false : {
+        k: hit.key,
+        v: hit.value,
+        e: hit.now + (hit.maxAge || 0)
+      }).toArray().filter(h => h)
+  }
+
+  dumpLru () {
+    return this[LRU_LIST]
+  }
+
+  set (key, value, maxAge) {
+    maxAge = maxAge || this[MAX_AGE]
+
+    if (maxAge && typeof maxAge !== 'number')
+      throw new TypeError('maxAge must be a number')
+
+    const now = maxAge ? Date.now() : 0
+    const len = this[LENGTH_CALCULATOR](value, key)
+
+    if (this[CACHE].has(key)) {
+      if (len > this[MAX]) {
+        del(this, this[CACHE].get(key))
+        return false
+      }
+
+      const node = this[CACHE].get(key)
+      const item = node.value
+
+      // dispose of the old one before overwriting
+      // split out into 2 ifs for better coverage tracking
+      if (this[DISPOSE]) {
+        if (!this[NO_DISPOSE_ON_SET])
+          this[DISPOSE](key, item.value)
+      }
+
+      item.now = now
+      item.maxAge = maxAge
+      item.value = value
+      this[LENGTH] += len - item.length
+      item.length = len
+      this.get(key)
+      trim(this)
+      return true
+    }
+
+    const hit = new Entry(key, value, len, now, maxAge)
+
+    // oversized objects fall out of cache automatically.
+    if (hit.length > this[MAX]) {
+      if (this[DISPOSE])
+        this[DISPOSE](key, value)
+
+      return false
+    }
+
+    this[LENGTH] += hit.length
+    this[LRU_LIST].unshift(hit)
+    this[CACHE].set(key, this[LRU_LIST].head)
+    trim(this)
+    return true
+  }
+
+  has (key) {
+    if (!this[CACHE].has(key)) return false
+    const hit = this[CACHE].get(key).value
+    return !isStale(this, hit)
+  }
+
+  get (key) {
+    return get(this, key, true)
+  }
+
+  peek (key) {
+    return get(this, key, false)
+  }
+
+  pop () {
+    const node = this[LRU_LIST].tail
+    if (!node)
+      return null
+
+    del(this, node)
+    return node.value
+  }
+
+  del (key) {
+    del(this, this[CACHE].get(key))
+  }
+
+  load (arr) {
+    // reset the cache
+    this.reset()
+
+    const now = Date.now()
+    // A previous serialized cache has the most recent items first
+    for (let l = arr.length - 1; l >= 0; l--) {
+      const hit = arr[l]
+      const expiresAt = hit.e || 0
+      if (expiresAt === 0)
+        // the item was created without expiration in a non aged cache
+        this.set(hit.k, hit.v)
+      else {
+        const maxAge = expiresAt - now
+        // dont add already expired items
+        if (maxAge > 0) {
+          this.set(hit.k, hit.v, maxAge)
+        }
+      }
+    }
+  }
+
+  prune () {
+    this[CACHE].forEach((value, key) => get(this, key, false))
+  }
+}
+
+const get = (self, key, doUse) => {
+  const node = self[CACHE].get(key)
+  if (node) {
+    const hit = node.value
+    if (isStale(self, hit)) {
+      del(self, node)
+      if (!self[ALLOW_STALE])
+        return undefined
+    } else {
+      if (doUse) {
+        if (self[UPDATE_AGE_ON_GET])
+          node.value.now = Date.now()
+        self[LRU_LIST].unshiftNode(node)
+      }
+    }
+    return hit.value
+  }
+}
+
+const isStale = (self, hit) => {
+  if (!hit || (!hit.maxAge && !self[MAX_AGE]))
+    return false
+
+  const diff = Date.now() - hit.now
+  return hit.maxAge ? diff > hit.maxAge
+    : self[MAX_AGE] && (diff > self[MAX_AGE])
+}
+
+const trim = self => {
+  if (self[LENGTH] > self[MAX]) {
+    for (let walker = self[LRU_LIST].tail;
+      self[LENGTH] > self[MAX] && walker !== null;) {
+      // We know that we're about to delete this one, and also
+      // what the next least recently used key will be, so just
+      // go ahead and set it now.
+      const prev = walker.prev
+      del(self, walker)
+      walker = prev
+    }
+  }
+}
+
+const del = (self, node) => {
+  if (node) {
+    const hit = node.value
+    if (self[DISPOSE])
+      self[DISPOSE](hit.key, hit.value)
+
+    self[LENGTH] -= hit.length
+    self[CACHE].delete(hit.key)
+    self[LRU_LIST].removeNode(node)
+  }
+}
+
+class Entry {
+  constructor (key, value, length, now, maxAge) {
+    this.key = key
+    this.value = value
+    this.length = length
+    this.now = now
+    this.maxAge = maxAge || 0
+  }
+}
+
+const forEachStep = (self, fn, node, thisp) => {
+  let hit = node.value
+  if (isStale(self, hit)) {
+    del(self, node)
+    if (!self[ALLOW_STALE])
+      hit = undefined
+  }
+  if (hit)
+    fn.call(thisp, hit.value, hit.key, self)
+}
+
+module.exports = LRUCache
+
+
+/***/ }),
+
+/***/ "./node_modules/lru-cache/node_modules/yallist/iterator.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/lru-cache/node_modules/yallist/iterator.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+module.exports = function (Yallist) {
+  Yallist.prototype[Symbol.iterator] = function* () {
+    for (let walker = this.head; walker; walker = walker.next) {
+      yield walker.value
+    }
+  }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/lru-cache/node_modules/yallist/yallist.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/lru-cache/node_modules/yallist/yallist.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+module.exports = Yallist
+
+Yallist.Node = Node
+Yallist.create = Yallist
+
+function Yallist (list) {
+  var self = this
+  if (!(self instanceof Yallist)) {
+    self = new Yallist()
+  }
+
+  self.tail = null
+  self.head = null
+  self.length = 0
+
+  if (list && typeof list.forEach === 'function') {
+    list.forEach(function (item) {
+      self.push(item)
+    })
+  } else if (arguments.length > 0) {
+    for (var i = 0, l = arguments.length; i < l; i++) {
+      self.push(arguments[i])
+    }
+  }
+
+  return self
+}
+
+Yallist.prototype.removeNode = function (node) {
+  if (node.list !== this) {
+    throw new Error('removing node which does not belong to this list')
+  }
+
+  var next = node.next
+  var prev = node.prev
+
+  if (next) {
+    next.prev = prev
+  }
+
+  if (prev) {
+    prev.next = next
+  }
+
+  if (node === this.head) {
+    this.head = next
+  }
+  if (node === this.tail) {
+    this.tail = prev
+  }
+
+  node.list.length--
+  node.next = null
+  node.prev = null
+  node.list = null
+
+  return next
+}
+
+Yallist.prototype.unshiftNode = function (node) {
+  if (node === this.head) {
+    return
+  }
+
+  if (node.list) {
+    node.list.removeNode(node)
+  }
+
+  var head = this.head
+  node.list = this
+  node.next = head
+  if (head) {
+    head.prev = node
+  }
+
+  this.head = node
+  if (!this.tail) {
+    this.tail = node
+  }
+  this.length++
+}
+
+Yallist.prototype.pushNode = function (node) {
+  if (node === this.tail) {
+    return
+  }
+
+  if (node.list) {
+    node.list.removeNode(node)
+  }
+
+  var tail = this.tail
+  node.list = this
+  node.prev = tail
+  if (tail) {
+    tail.next = node
+  }
+
+  this.tail = node
+  if (!this.head) {
+    this.head = node
+  }
+  this.length++
+}
+
+Yallist.prototype.push = function () {
+  for (var i = 0, l = arguments.length; i < l; i++) {
+    push(this, arguments[i])
+  }
+  return this.length
+}
+
+Yallist.prototype.unshift = function () {
+  for (var i = 0, l = arguments.length; i < l; i++) {
+    unshift(this, arguments[i])
+  }
+  return this.length
+}
+
+Yallist.prototype.pop = function () {
+  if (!this.tail) {
+    return undefined
+  }
+
+  var res = this.tail.value
+  this.tail = this.tail.prev
+  if (this.tail) {
+    this.tail.next = null
+  } else {
+    this.head = null
+  }
+  this.length--
+  return res
+}
+
+Yallist.prototype.shift = function () {
+  if (!this.head) {
+    return undefined
+  }
+
+  var res = this.head.value
+  this.head = this.head.next
+  if (this.head) {
+    this.head.prev = null
+  } else {
+    this.tail = null
+  }
+  this.length--
+  return res
+}
+
+Yallist.prototype.forEach = function (fn, thisp) {
+  thisp = thisp || this
+  for (var walker = this.head, i = 0; walker !== null; i++) {
+    fn.call(thisp, walker.value, i, this)
+    walker = walker.next
+  }
+}
+
+Yallist.prototype.forEachReverse = function (fn, thisp) {
+  thisp = thisp || this
+  for (var walker = this.tail, i = this.length - 1; walker !== null; i--) {
+    fn.call(thisp, walker.value, i, this)
+    walker = walker.prev
+  }
+}
+
+Yallist.prototype.get = function (n) {
+  for (var i = 0, walker = this.head; walker !== null && i < n; i++) {
+    // abort out of the list early if we hit a cycle
+    walker = walker.next
+  }
+  if (i === n && walker !== null) {
+    return walker.value
+  }
+}
+
+Yallist.prototype.getReverse = function (n) {
+  for (var i = 0, walker = this.tail; walker !== null && i < n; i++) {
+    // abort out of the list early if we hit a cycle
+    walker = walker.prev
+  }
+  if (i === n && walker !== null) {
+    return walker.value
+  }
+}
+
+Yallist.prototype.map = function (fn, thisp) {
+  thisp = thisp || this
+  var res = new Yallist()
+  for (var walker = this.head; walker !== null;) {
+    res.push(fn.call(thisp, walker.value, this))
+    walker = walker.next
+  }
+  return res
+}
+
+Yallist.prototype.mapReverse = function (fn, thisp) {
+  thisp = thisp || this
+  var res = new Yallist()
+  for (var walker = this.tail; walker !== null;) {
+    res.push(fn.call(thisp, walker.value, this))
+    walker = walker.prev
+  }
+  return res
+}
+
+Yallist.prototype.reduce = function (fn, initial) {
+  var acc
+  var walker = this.head
+  if (arguments.length > 1) {
+    acc = initial
+  } else if (this.head) {
+    walker = this.head.next
+    acc = this.head.value
+  } else {
+    throw new TypeError('Reduce of empty list with no initial value')
+  }
+
+  for (var i = 0; walker !== null; i++) {
+    acc = fn(acc, walker.value, i)
+    walker = walker.next
+  }
+
+  return acc
+}
+
+Yallist.prototype.reduceReverse = function (fn, initial) {
+  var acc
+  var walker = this.tail
+  if (arguments.length > 1) {
+    acc = initial
+  } else if (this.tail) {
+    walker = this.tail.prev
+    acc = this.tail.value
+  } else {
+    throw new TypeError('Reduce of empty list with no initial value')
+  }
+
+  for (var i = this.length - 1; walker !== null; i--) {
+    acc = fn(acc, walker.value, i)
+    walker = walker.prev
+  }
+
+  return acc
+}
+
+Yallist.prototype.toArray = function () {
+  var arr = new Array(this.length)
+  for (var i = 0, walker = this.head; walker !== null; i++) {
+    arr[i] = walker.value
+    walker = walker.next
+  }
+  return arr
+}
+
+Yallist.prototype.toArrayReverse = function () {
+  var arr = new Array(this.length)
+  for (var i = 0, walker = this.tail; walker !== null; i++) {
+    arr[i] = walker.value
+    walker = walker.prev
+  }
+  return arr
+}
+
+Yallist.prototype.slice = function (from, to) {
+  to = to || this.length
+  if (to < 0) {
+    to += this.length
+  }
+  from = from || 0
+  if (from < 0) {
+    from += this.length
+  }
+  var ret = new Yallist()
+  if (to < from || to < 0) {
+    return ret
+  }
+  if (from < 0) {
+    from = 0
+  }
+  if (to > this.length) {
+    to = this.length
+  }
+  for (var i = 0, walker = this.head; walker !== null && i < from; i++) {
+    walker = walker.next
+  }
+  for (; walker !== null && i < to; i++, walker = walker.next) {
+    ret.push(walker.value)
+  }
+  return ret
+}
+
+Yallist.prototype.sliceReverse = function (from, to) {
+  to = to || this.length
+  if (to < 0) {
+    to += this.length
+  }
+  from = from || 0
+  if (from < 0) {
+    from += this.length
+  }
+  var ret = new Yallist()
+  if (to < from || to < 0) {
+    return ret
+  }
+  if (from < 0) {
+    from = 0
+  }
+  if (to > this.length) {
+    to = this.length
+  }
+  for (var i = this.length, walker = this.tail; walker !== null && i > to; i--) {
+    walker = walker.prev
+  }
+  for (; walker !== null && i > from; i--, walker = walker.prev) {
+    ret.push(walker.value)
+  }
+  return ret
+}
+
+Yallist.prototype.splice = function (start, deleteCount /*, ...nodes */) {
+  if (start > this.length) {
+    start = this.length - 1
+  }
+  if (start < 0) {
+    start = this.length + start;
+  }
+
+  for (var i = 0, walker = this.head; walker !== null && i < start; i++) {
+    walker = walker.next
+  }
+
+  var ret = []
+  for (var i = 0; walker && i < deleteCount; i++) {
+    ret.push(walker.value)
+    walker = this.removeNode(walker)
+  }
+  if (walker === null) {
+    walker = this.tail
+  }
+
+  if (walker !== this.head && walker !== this.tail) {
+    walker = walker.prev
+  }
+
+  for (var i = 2; i < arguments.length; i++) {
+    walker = insert(this, walker, arguments[i])
+  }
+  return ret;
+}
+
+Yallist.prototype.reverse = function () {
+  var head = this.head
+  var tail = this.tail
+  for (var walker = head; walker !== null; walker = walker.prev) {
+    var p = walker.prev
+    walker.prev = walker.next
+    walker.next = p
+  }
+  this.head = tail
+  this.tail = head
+  return this
+}
+
+function insert (self, node, value) {
+  var inserted = node === self.head ?
+    new Node(value, null, node, self) :
+    new Node(value, node, node.next, self)
+
+  if (inserted.next === null) {
+    self.tail = inserted
+  }
+  if (inserted.prev === null) {
+    self.head = inserted
+  }
+
+  self.length++
+
+  return inserted
+}
+
+function push (self, item) {
+  self.tail = new Node(item, self.tail, null, self)
+  if (!self.head) {
+    self.head = self.tail
+  }
+  self.length++
+}
+
+function unshift (self, item) {
+  self.head = new Node(item, null, self.head, self)
+  if (!self.tail) {
+    self.tail = self.head
+  }
+  self.length++
+}
+
+function Node (value, prev, next, list) {
+  if (!(this instanceof Node)) {
+    return new Node(value, prev, next, list)
+  }
+
+  this.list = list
+  this.value = value
+
+  if (prev) {
+    prev.next = this
+    this.prev = prev
+  } else {
+    this.prev = null
+  }
+
+  if (next) {
+    next.prev = this
+    this.next = next
+  } else {
+    this.next = null
+  }
+}
+
+try {
+  // add if support for Symbol.iterator is present
+  __webpack_require__(/*! ./iterator.js */ "./node_modules/lru-cache/node_modules/yallist/iterator.js")(Yallist)
+} catch (er) {}
+
+
+/***/ }),
+
 /***/ "./node_modules/object-assign/index.js":
 /*!*********************************************!*\
   !*** ./node_modules/object-assign/index.js ***!
@@ -64453,6 +65674,765 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./node_modules/regenerator-runtime/runtime.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/regenerator-runtime/runtime.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var runtime = (function (exports) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  function define(obj, key, value) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+    return obj[key];
+  }
+  try {
+    // IE 8 has a broken Object.defineProperty that only works on DOM objects.
+    define({}, "");
+  } catch (err) {
+    define = function(obj, key, value) {
+      return obj[key] = value;
+    };
+  }
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  exports.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunction.displayName = define(
+    GeneratorFunctionPrototype,
+    toStringTagSymbol,
+    "GeneratorFunction"
+  );
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      define(prototype, method, function(arg) {
+        return this._invoke(method, arg);
+      });
+    });
+  }
+
+  exports.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  exports.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      define(genFun, toStringTagSymbol, "GeneratorFunction");
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  exports.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator, PromiseImpl) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return PromiseImpl.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return PromiseImpl.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration.
+          result.value = unwrapped;
+          resolve(result);
+        }, function(error) {
+          // If a rejected Promise was yielded, throw the rejection back
+          // into the async generator function so it can be handled there.
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new PromiseImpl(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  exports.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+    if (PromiseImpl === void 0) PromiseImpl = Promise;
+
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList),
+      PromiseImpl
+    );
+
+    return exports.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        // Note: ["return"] must be used for ES3 parsing compatibility.
+        if (delegate.iterator["return"]) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  define(Gp, toStringTagSymbol, "Generator");
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function() {
+    return this;
+  };
+
+  Gp.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  exports.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  exports.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+
+  // Regardless of whether this script is executing as a CommonJS module
+  // or not, return the runtime object so that we can declare the variable
+  // regeneratorRuntime in the outer scope, which allows this module to be
+  // injected easily by `bin/regenerator --include-runtime script.js`.
+  return exports;
+
+}(
+  // If this script is executing as a CommonJS module, use module.exports
+  // as the regeneratorRuntime namespace. Otherwise create a new empty
+  // object. Either way, the resulting object will be used to initialize
+  // the regeneratorRuntime variable at the top of this file.
+   true ? module.exports : undefined
+));
+
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  // This module should not be running in strict mode, so the above
+  // assignment should always work unless something is misconfigured. Just
+  // in case runtime.js accidentally runs in strict mode, we can escape
+  // strict mode using a global Function call. This could conceivably fail
+  // if a Content Security Policy forbids using Function, but in that case
+  // the proper solution is to fix the accidental strict mode problem. If
+  // you've misconfigured your bundler to force strict mode and applied a
+  // CSP to forbid Function, and you're not willing to fix either of those
+  // problems, please detail your unique predicament in a GitHub issue.
+  Function("r", "regeneratorRuntime = r")(runtime);
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/scheduler/cjs/scheduler-tracing.development.js":
 /*!*********************************************************************!*\
   !*** ./node_modules/scheduler/cjs/scheduler-tracing.development.js ***!
@@ -65802,7 +67782,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
  */
 
 
-__webpack_require__(/*! ./components/Example */ "./resources/js/components/Example.js");
+__webpack_require__(/*! ./components/FollowButton */ "./resources/js/components/FollowButton.js");
 
 /***/ }),
 
@@ -65851,10 +67831,10 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
-/***/ "./resources/js/components/Example.js":
-/*!********************************************!*\
-  !*** ./resources/js/components/Example.js ***!
-  \********************************************/
+/***/ "./resources/js/components/FollowButton.js":
+/*!*************************************************!*\
+  !*** ./resources/js/components/FollowButton.js ***!
+  \*************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -65864,29 +67844,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var axios_hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios-hooks */ "./node_modules/axios-hooks/es/index.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-function Example() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "container"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row justify-content-center"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-8"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "card"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "card-header"
-  }, "Example Component"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "card-body"
-  }, "I'm an example component!")))));
+
+
+function FollowUser() {
+  var element = document.getElementById("followbutton");
+  var followstatus = element.getAttribute('follow-status');
+  var userId = element.getAttribute('user-id');
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(followstatus),
+      _useState2 = _slicedToArray(_useState, 2),
+      status = _useState2[0],
+      setStatus = _useState2[1];
+
+  var _useAxios = Object(axios_hooks__WEBPACK_IMPORTED_MODULE_2__["default"])({
+    url: '/follow/' + userId,
+    method: 'POST'
+  }, {
+    manual: true
+  }),
+      _useAxios2 = _slicedToArray(_useAxios, 2),
+      _useAxios2$ = _useAxios2[0],
+      data = _useAxios2$.data,
+      loading = _useAxios2$.loading,
+      error = _useAxios2$.error,
+      executeFollow = _useAxios2[1];
+
+  var type = '';
+
+  if (status === 'false') {
+    type = 'Follow';
+  } else {
+    type = 'Unfollow';
+  }
+
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(type),
+      _useState4 = _slicedToArray(_useState3, 2),
+      buttonText = _useState4[0],
+      setButtonText = _useState4[1];
+
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    if (data !== undefined) {
+      data.attached.length === 0 ? setButtonText("Follow") : setButtonText("Unfollow");
+    }
+  });
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    onClick: executeFollow,
+    text: "true",
+    className: "btn btn-primary"
+  }, buttonText);
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (Example);
+/* harmony default export */ __webpack_exports__["default"] = (FollowUser);
 
-if (document.getElementById('example')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Example, null), document.getElementById('example'));
+if (document.getElementById('followbutton')) {
+  react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(FollowUser, null), document.getElementById('followbutton'));
 }
 
 /***/ }),
