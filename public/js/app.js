@@ -67901,6 +67901,10 @@ function FollowUser() {
     if (data !== undefined) {
       data.attached.length === 0 ? setButtonText("Follow") : setButtonText("Unfollow");
     }
+
+    if (error) {
+      window.location = '/login';
+    }
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     onClick: executeFollow,

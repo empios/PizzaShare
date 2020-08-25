@@ -28,6 +28,9 @@ function FollowUser() {
         if (data !== undefined){
             data.attached.length === 0 ? setButtonText("Follow") : setButtonText("Unfollow")
         }
+        if (error) {
+            window.location = '/login';
+        }
     });
 
 
