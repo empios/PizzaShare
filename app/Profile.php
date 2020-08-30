@@ -9,8 +9,8 @@ class Profile extends Model
 
     protected $guarded = [];
     public function profileImage(){
-        $imagePath = ($this->image) ? $this->image : 'profile/noavible.jpg';
-        return '/storage/'.$imagePath;
+        $imagePath = ($this->image) ? $this->image : 'png/noavible.jpg';
+        return '/png/'.$imagePath;
     }
     public function user(){
         return $this -> belongsTo(User::class);

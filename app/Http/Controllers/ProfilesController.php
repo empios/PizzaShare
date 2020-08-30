@@ -42,8 +42,8 @@ class ProfilesController extends Controller
 
 
         if ($request['image']) {
-            $imagePath = $request['image']->store('profile', 'public');
-            $image = Image::make(public_path("storage/{$imagePath}"))->fit(1000, 1000);
+            $imagePath = $request['image']->store('png', 'public');
+            $image = Image::make(public_path("png/{$imagePath}"))->fit(1000, 1000);
             $image->save();
             $imageArr = ['image' => $imagePath];
 

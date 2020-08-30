@@ -1,11 +1,9 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container">
     <div class="row">
         <div class="col-3 p-5">
-        <!--<img src="$user -> profile -> profileImage()}}" class="rounded-circle w-100">-->
-            <img src="/png/noavible.jpg" class="rounded-circle w-100">
+        <img src="{{$user -> profile -> profileImage()}}" class="rounded-circle w-100">
         </div>
         @php
             $val = ($follow) ? 'true' : 'false';
@@ -35,7 +33,7 @@
        @foreach($user -> posts as $post)
            <div class="col-4 pb-4">
                <a href="/p/{{$post -> id}}">
-                   <img src="/storage/{{$post -> image}}" class="w-100">
+                   <img src="/png/{{$post -> image}}" class="w-100">
                </a>
            </div>
         @endforeach

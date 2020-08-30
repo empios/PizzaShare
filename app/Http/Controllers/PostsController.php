@@ -31,8 +31,8 @@ class PostsController extends Controller
             'title' => 'required'
         ]);
 
-        $imagePath = $request['image']->store('uploads', 'public');
-        $image = Image::make(public_path("storage/{$imagePath}"))->fit(1200, 1200);
+        $imagePath = $request['image']->store('png', 'public');
+        $image = Image::make(public_path("png/{$imagePath}"))->fit(1200, 1200);
         $image->save();
 
         auth()->user()->posts()->create([
